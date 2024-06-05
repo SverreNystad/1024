@@ -43,7 +43,7 @@ class AppTest {
             mutableListOf(0, 2, 0, 2),
             mutableListOf(2, 2, 2, 2)
         )
-        game = Game(initialBoard)
+        game = Game(initialBoard, 0)
         game.move(Direction.UP)
         
         val expectedBoard = listOf(
@@ -64,7 +64,7 @@ class AppTest {
             mutableListOf(0, 2, 0, 2),
             mutableListOf(2, 2, 2, 2)
         )
-        game = Game(initialBoard)
+        game = Game(initialBoard, 0)
         game.move(Direction.DOWN)
         
         val expectedBoard = listOf(
@@ -85,7 +85,7 @@ class AppTest {
             mutableListOf(0, 0, 0, 2),
             mutableListOf(2, 2, 2, 2)
         )
-        game = Game(initialBoard)
+        game = Game(initialBoard, 0)
         game.move(Direction.LEFT)
         
         val expectedBoard = listOf(
@@ -106,7 +106,7 @@ class AppTest {
             mutableListOf(0, 0, 0, 2),
             mutableListOf(2, 2, 2, 2)
         )
-        game = Game(initialBoard)
+        game = Game(initialBoard, 0)
         game.move(Direction.RIGHT)
         
         val expectedBoard = listOf(
