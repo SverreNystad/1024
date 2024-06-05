@@ -15,6 +15,30 @@ class App {
 fun main() {
     val app = App()
     println(app.greeting)
+
+    val game = Game()
+    val inputMap = mapOf(
+        "up" to Direction.UP,
+        "down" to Direction.DOWN,
+        "left" to Direction.LEFT,
+        "right" to Direction.RIGHT
+    )
+
+    while (true) {
+        println("Enter direction (up, down, left, right) or 'exit' to quit:")
+        val input = readLine()?.trim()?.lowercase()
+
+        if (input == "exit") {
+            break
+        }
+
+        val direction = inputMap[input]
+        if (direction != null) {
+            game.move(direction)
+        } else {
+            println("Invalid input. Please enter 'up', 'down', 'left', 'right', or 'exit'.")
+        }
+    }
 }
 
 const val COLS: Int = 4
@@ -36,10 +60,15 @@ class Game {
         this.generationSize = 2
     }
     
+    constructor(board: List<MutableList<Int>>) {
+        this.score = 0
+        this.board = board
+        this.generationSize = 2
+    }
 
     public fun move(action: Direction) {
         doAction(action)
-        populateBoard()
+        // populateBoard()
     }
 
     private fun doAction(action: Direction) {
@@ -59,6 +88,18 @@ class Game {
                         }
                     }
 
+                    // Check for all equal slots from top down and merge them
+                    var i = 0
+                    while (i < nonZeroValues.size - 1) {
+                        if (nonZeroValues[i] == nonZeroValues[i + 1]) {
+                            nonZeroValues[i] *= 2
+                            nonZeroValues.removeAt(i + 1)
+                            zeroCount++
+                            score += nonZeroValues[i]
+                        }
+                        i++
+                    }
+
                     // Fill the column with non-zero values followed by zeros
                     for (row in 0 until nonZeroValues.size) {
                         board[row][col] = nonZeroValues[row]
@@ -68,9 +109,114 @@ class Game {
                     }
                 }
             }
-            Direction.DOWN -> {}
-            Direction.LEFT -> {}
-            Direction.RIGHT -> {}
+            Direction.DOWN -> {
+                for (col in 0 until COLS) {
+                    val nonZeroValues = mutableListOf<Int>()
+                    var zeroCount = 0
+
+                    // Collect non-zero values and count zeros
+                    for (row in 0 until ROWS) {
+                        val value = board[row][col]
+                        if (value != 0) {
+                            nonZeroValues.add(value)
+                        } else {
+                            zeroCount++
+                        }
+                    }
+
+                    // Check for all equal slots from top down and merge them
+                    var i = 0
+                    while (i < nonZeroValues.size - 1) {
+                        if (nonZeroValues[i] == nonZeroValues[i + 1]) {
+                            nonZeroValues[i] *= 2
+                            nonZeroValues.removeAt(i + 1)
+                            zeroCount++
+                            score += nonZeroValues[i]
+                        }
+                        i++
+                    }
+
+                    // Fill the column with non-zero values followed by zeros
+                    for (row in 0 until nonZeroValues.size) {
+                        board[(ROWS - 1) - row][col] = nonZeroValues[row]
+                    }
+                    for (row in nonZeroValues.size until ROWS) {
+                        board[(ROWS - 1) - row][col] = 0
+                    }
+                }
+            }
+            Direction.LEFT -> {
+                for (row in 0 until ROWS) {
+                    val nonZeroValues = mutableListOf<Int>()
+                    var zeroCount = 0
+
+                    // Collect non-zero values and count zeros
+                    for (col in 0 until COLS) {
+                        val value = board[row][col]
+                        if (value != 0) {
+                            nonZeroValues.add(value)
+                        } else {
+                            zeroCount++
+                        }
+                    }
+
+                    // Check for all equal slots from left to right and merge them
+                    var i = 0
+                    while (i < nonZeroValues.size - 1) {
+                        if (nonZeroValues[i] == nonZeroValues[i + 1]) {
+                            nonZeroValues[i] *= 2
+                            nonZeroValues.removeAt(i + 1)
+                            zeroCount++
+                            score += nonZeroValues[i] // Assuming you want to add to the score
+                        }
+                        i++
+                    }
+
+                    // Fill the row with non-zero values followed by zeros
+                    for (col in 0 until nonZeroValues.size) {
+                        board[row][col] = nonZeroValues[col]
+                    }
+                    for (col in nonZeroValues.size until COLS) {
+                        board[row][col] = 0
+                    }
+                }
+            }
+            Direction.RIGHT -> {
+                for (row in 0 until ROWS) {
+                    val nonZeroValues = mutableListOf<Int>()
+                    var zeroCount = 0
+
+                    // Collect non-zero values and count zeros
+                    for (col in 0 until COLS) {
+                        val value = board[row][col]
+                        if (value != 0) {
+                            nonZeroValues.add(value)
+                        } else {
+                            zeroCount++
+                        }
+                    }
+
+                    // Check for all equal slots from right to left and merge them
+                    var i = nonZeroValues.size - 2
+                    while (i > 0) {
+                        if (nonZeroValues[i] == nonZeroValues[i - 1]) {
+                            nonZeroValues[i] *= 2
+                            nonZeroValues.removeAt(i - 1)
+                            zeroCount++
+                            score += nonZeroValues[i] // Assuming you want to add to the score
+                        }
+                        i--
+                    }
+
+                    // Fill the row with zeros followed by non-zero values
+                    for (col in 0 until zeroCount) {
+                        board[row][COLS - 1 - col] = 0
+                    }
+                    for (col in 0 until nonZeroValues.size) {
+                        board[row][COLS - 1 - zeroCount - col] = nonZeroValues[nonZeroValues.size - 1 - col]
+                    }
+                }
+            }
         }
     }
 
@@ -112,5 +258,17 @@ class Game {
 
     public fun getScore(): Int {
         return score
+    }
+
+    public fun display(): String {
+        val stringBuilder = StringBuilder()
+
+        for(row in 0 until ROWS) {
+            for (col in 0 until COLS) {
+                stringBuilder.append(board[row][col])
+            }
+            stringBuilder.append("\n")
+        }
+        return stringBuilder.toString()
     }
 }

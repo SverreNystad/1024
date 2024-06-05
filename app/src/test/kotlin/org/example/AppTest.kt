@@ -3,16 +3,19 @@
  */
 package org.example
 
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class AppTest {
-    @Test
-    fun appHasAGreeting() {
-        val classUnderTest = App()
-        assertNotNull(classUnderTest.greeting, "app should have a greeting")
+    
+    private lateinit var game: Game
+
+    @BeforeEach
+    fun setUp() {
+        game = Game()
     }
 
     @Test
@@ -33,46 +36,86 @@ class AppTest {
     }
     
     @Test
-    fun makeMoveUp() {
-        val game = Game()
-        val action = Direction.UP
-        val board = game.getBoard()
-        val deepCopy = board.map { it.toMutableList()}
-        game.move(action)
-        assertNotEquals(board, deepCopy)
+    fun testMoveUp() {
+        val initialBoard = listOf(
+            mutableListOf(2, 0, 0, 2),
+            mutableListOf(2, 0, 2, 0),
+            mutableListOf(0, 2, 0, 2),
+            mutableListOf(2, 2, 2, 2)
+        )
+        game = Game(initialBoard)
+        game.move(Direction.UP)
+        
+        val expectedBoard = listOf(
+            mutableListOf(4, 4, 4, 4),
+            mutableListOf(2, 0, 0, 2),
+            mutableListOf(0, 0, 0, 0),
+            mutableListOf(0, 0, 0, 0)
+        )
+        
+        assertEquals(expectedBoard, game.getBoard())
     }
 
     @Test
-    fun makeMoveDown() {
-        val game = Game()
-        val action = Direction.DOWN
-        val board = game.getBoard()
-        val deepCopy = board.map { it.toMutableList()}
-        game.move(action)
-        assertNotEquals(board, deepCopy)
-
+    fun testMoveDown() {
+        val initialBoard = listOf(
+            mutableListOf(2, 2, 0, 2),
+            mutableListOf(2, 2, 2, 0),
+            mutableListOf(0, 2, 0, 2),
+            mutableListOf(2, 2, 2, 2)
+        )
+        game = Game(initialBoard)
+        game.move(Direction.DOWN)
+        
+        val expectedBoard = listOf(
+            mutableListOf(0, 0, 0, 0),
+            mutableListOf(0, 0, 0, 0),
+            mutableListOf(2, 4, 0, 2),
+            mutableListOf(4, 4, 4, 4)
+        )
+        
+        assertEquals(expectedBoard, game.getBoard())
     }
 
     @Test
-    fun makeMoveLeft() {
-        val game = Game()
-        val action = Direction.LEFT
-        val board = game.getBoard()
-        val deepCopy = board.map { it.toMutableList()}
-        game.move(action)
-        assertNotEquals(board, deepCopy)
-
+    fun testMoveLeft() {
+        val initialBoard = listOf(
+            mutableListOf(2, 0, 0, 2),
+            mutableListOf(2, 0, 2, 0),
+            mutableListOf(0, 0, 0, 2),
+            mutableListOf(2, 2, 2, 2)
+        )
+        game = Game(initialBoard)
+        game.move(Direction.LEFT)
+        
+        val expectedBoard = listOf(
+            mutableListOf(4, 0, 0, 0),
+            mutableListOf(4, 0, 0, 0),
+            mutableListOf(2, 0, 0, 0),
+            mutableListOf(4, 4, 0, 0)
+        )
+        
+        assertEquals(expectedBoard, game.getBoard())
     }
 
     @Test
-    fun makeMoveRight() {
-        val game = Game()
-        val action = Direction.RIGHT
-        val board = game.getBoard()
-        val deepCopy = board.map { it.toMutableList()}
-        game.move(action)
-        assertNotEquals(board, deepCopy)
-
+    fun testMoveRight() {
+        val initialBoard = listOf(
+            mutableListOf(2, 0, 0, 2),
+            mutableListOf(2, 0, 2, 0),
+            mutableListOf(0, 0, 0, 2),
+            mutableListOf(2, 2, 2, 2)
+        )
+        game = Game(initialBoard)
+        game.move(Direction.RIGHT)
+        
+        val expectedBoard = listOf(
+            mutableListOf(0, 0, 0, 4),
+            mutableListOf(0, 0, 0, 4),
+            mutableListOf(0, 0, 0, 2),
+            mutableListOf(0, 0, 4, 4)
+        )
+        
+        assertEquals(expectedBoard, game.getBoard())
     }
- 
 }
