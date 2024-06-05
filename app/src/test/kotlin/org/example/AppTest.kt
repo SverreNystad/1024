@@ -118,4 +118,43 @@ class AppTest {
         
         assertEquals(expectedBoard, game.getBoard())
     }
+
+    @Test
+    fun testScoreUpdate() {
+        val initialBoard = listOf(
+            mutableListOf(2, 2, 0, 0),
+            mutableListOf(2, 2, 0, 0),
+            mutableListOf(0, 0, 0, 0),
+            mutableListOf(0, 0, 0, 0)
+        )
+        game = Game(initialBoard, 2)
+        game.move(Direction.UP)
+        
+        assertEquals(8, game.getScore())
+    }
+
+    @Test
+    fun testMovePopulatesBoard() {
+        val initialBoard = listOf(
+            mutableListOf(2, 2, 0, 0),
+            mutableListOf(0, 0, 0, 0),
+            mutableListOf(0, 0, 0, 0),
+            mutableListOf(0, 0, 0, 0)
+        )
+        game = Game(initialBoard, 2)
+        game.move(Direction.UP)
+        val expectedAmountOfNonEmptySlots = 4
+
+        val board = game.getBoard()
+        val nonEmptySlots = mutableListOf<Int>()
+        for (row in 0 until ROWS) {
+            for (col in 0 until COLS) {
+                if (board[row][col] != EMPTY) {
+                    nonEmptySlots.add(board[row][col])
+                }
+            }
+        }
+
+        assertEquals(nonEmptySlots.size, expectedAmountOfNonEmptySlots)
+    }
 }
