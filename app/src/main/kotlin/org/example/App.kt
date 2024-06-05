@@ -60,15 +60,15 @@ class Game {
         this.generationSize = 2
     }
     
-    constructor(board: List<MutableList<Int>>) {
+    constructor(board: List<MutableList<Int>>, generationSize: Int) {
         this.score = 0
         this.board = board
-        this.generationSize = 2
+        this.generationSize = generationSize
     }
 
     public fun move(action: Direction) {
         doAction(action)
-        // populateBoard()
+        populateBoard()
     }
 
     private fun doAction(action: Direction) {
