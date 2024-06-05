@@ -167,7 +167,7 @@ class Game {
                             nonZeroValues[i] *= 2
                             nonZeroValues.removeAt(i + 1)
                             zeroCount++
-                            score += nonZeroValues[i] // Assuming you want to add to the score
+                            score += nonZeroValues[i] 
                         }
                         i++
                     }
@@ -196,24 +196,24 @@ class Game {
                         }
                     }
 
-                    // Check for all equal slots from right to left and merge them
-                    var i = nonZeroValues.size - 2
-                    while (i > 0) {
-                        if (nonZeroValues[i] == nonZeroValues[i - 1]) {
+                     // Check for all equal slots from left right and merge them
+                    var i = 0
+                    while (i < nonZeroValues.size - 1) {
+                        if (nonZeroValues[i] == nonZeroValues[i + 1]) {
                             nonZeroValues[i] *= 2
-                            nonZeroValues.removeAt(i - 1)
+                            nonZeroValues.removeAt(i + 1)
                             zeroCount++
-                            score += nonZeroValues[i] // Assuming you want to add to the score
+                            score += nonZeroValues[i]
                         }
-                        i--
+                        i++
                     }
 
                     // Fill the row with zeros followed by non-zero values
-                    for (col in 0 until zeroCount) {
-                        board[row][COLS - 1 - col] = 0
-                    }
                     for (col in 0 until nonZeroValues.size) {
-                        board[row][COLS - 1 - zeroCount - col] = nonZeroValues[nonZeroValues.size - 1 - col]
+                        board[row][COLS - 1 - col] = nonZeroValues[col]
+                    }
+                    for (col in nonZeroValues.size until COLS) {
+                        board[row][COLS - 1  - col] = 0
                     }
                 }
             }
