@@ -37,8 +37,13 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.GameKt"
+    mainClass.set("org.example.GameKt")
 }
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}
+
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
