@@ -4,7 +4,7 @@ This is a simple CLI version of the game 1024. The game is played on a 4x4 grid,
 
 ## Prerequisites
 * Ensure that git is installed on your machine. [Download Git](https://git-scm.com/downloads)
-* Ensure that Docker is installed on your machine. [Download Docker](https://www.docker.com/products/docker-desktop)
+* Ensure that Gradle is installed on your machine. [Download Gradle](https://gradle.org/install/) (Recommend using SDKMAN to install Gradle [SDKMAN](https://sdkman.io/))
 
 ## Usage
 To run the program, use the following commands:
@@ -14,7 +14,7 @@ To run the program, use the following commands:
 ```
 
 ## Testing
-    To run the tests, use the following command:
+To run the tests, use the following command:
 ```bash
 ./gradlew test
 ```
