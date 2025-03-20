@@ -14,7 +14,7 @@ import javafx.stage.Stage
 import javafx.util.Duration
 
 class GameUI : Application() {
-    private val game = Game()
+    private var game = Game()
 
     override fun start(primaryStage: Stage) {
         // Create a GridPane to display the board.
@@ -51,13 +51,24 @@ class GameUI : Application() {
             }
         }
 
+        // Reset
+        val resetButton = Button("Reset").apply {
+            setOnAction {
+                game = Game()
+                updateGrid(boardGrid)
+            }
+        }
+
         // Arrange buttons in an HBox.
         val controls = HBox(10.0, leftButton, upButton, downButton, rightButton).apply {
             alignment = Pos.CENTER
         }
+        val resetControls = HBox(15.0, resetButton).apply {
+            alignment = Pos.CENTER
+        }
 
         // Arrange the board and buttons in a VBox.
-        val root = VBox(20.0, boardGrid, controls).apply {
+        val root = VBox(20.0, boardGrid, controls, resetControls).apply {
             alignment = Pos.CENTER
         }
 
